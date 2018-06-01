@@ -1,0 +1,20 @@
+# Eclipse
+.settings
+.classpath
+.project
+.factorypath
+
+# Intellij
+.idea
+*.iml
+
+# Maven
+target/
+
+# Project
+*.log
+psi-probe.iws
+psi-probe.ipr
+.mvn/wrapper/maven-wrapper.jar
+*.releaseBackup
+release.properties
