@@ -56,6 +56,7 @@ public class ProbeInitializer implements WebApplicationInitializer {
     probe.addMapping("*.htm");
     probe.addMapping("*.ajax");
     probe.addMapping("/logs/*");
+    probe.addMapping("/logs2/*");
     probe.addMapping("/chart.png");
 
     // Set sitemesh filter

@@ -46,6 +46,8 @@ import psiprobe.beans.ContainerListenerBean;
 import psiprobe.beans.ContainerWrapperBean;
 import psiprobe.beans.JBossResourceResolverBean;
 import psiprobe.beans.JvmMemoryInfoAccessorBean;
+import psiprobe.beans.LogByDirectoryBean;
+import psiprobe.beans.LogByDirectoryResolverBean;
 import psiprobe.beans.LogResolverBean;
 import psiprobe.beans.ResourceResolver;
 import psiprobe.beans.ResourceResolverBean;
@@ -980,5 +982,21 @@ public class ProbeConfig extends WebMvcConfigurerAdapter {
 
     return bean;
   }
+  
+  /**
+   * Gets the log LogByDirectory bean.
+   *
+   * @return the log LogByDirectory bean
+   */
+  @Bean(name = "logByDirectoryBean")
+  public LogByDirectoryBean getLogByDirectoryBean() {
+    logger.debug("Instantiated logByDirectoryBean");
+    return new LogByDirectoryBean();
+  }
 
+  @Bean(name = "logByDirectoryResolver")
+  public LogByDirectoryResolverBean getLogByDirectoryResolverBean() {
+    logger.debug("Instantiated logByDirectoryResolverBean");
+    return new LogByDirectoryResolverBean();
+  }
 }

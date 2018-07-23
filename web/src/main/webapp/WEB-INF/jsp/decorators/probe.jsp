@@ -72,6 +72,11 @@
 					</a>
 				</li>
 				<li>
+					<a class="${navTabLogs2}" href="<c:url value='/logs2/list2.htm'/>">
+						<spring:message code="probe.jsp.menu.logs2"/>
+					</a>
+				</li>
+				<li>
 					<a class="${navTabThreads}" href="<c:url value='/threads.htm'/>">
 						<spring:message code="probe.jsp.menu.threads"/>
 					</a>
@@ -141,6 +146,11 @@
 				</li>
 				<li>
 					<a href="<c:url value='/logs/list.htm'/>">
+						<spring:message code="probe.jsp.menu.logs"/>
+					</a>
+				</li>
+				<li>
+					<a href="<c:url value='/logs2/list.htm'/>">
 						<spring:message code="probe.jsp.menu.logs"/>
 					</a>
 				</li>

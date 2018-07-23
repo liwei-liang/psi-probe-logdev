@@ -28,13 +28,13 @@
 		<script type="text/javascript" src="<c:url value='/js/behaviour.js'/>"></script>
 	</head>
 
-	<c:set var="navTabLogs" value="active" scope="request"/>
+	<c:set var="navTabLogs2" value="active" scope="request"/>
 
 	<body>
 
 		<ul class="options">
 			<li id="back">
-				<a href="<c:url value='/logs/list.htm'/>">
+				<a href="<c:url value='/logs2/list2.htm'/>">
 					<spring:message code="probe.jsp.follow.menu.back"/>
 				</a>
 			</li>
@@ -73,33 +73,33 @@
 					<spring:message code="probe.jsp.follow.menu.clear"/>
 				</a>
 			</li>
-			<li id="download">
-				<c:url value="/logs/download" var="downloadUrl">
-					<c:param name="logType" value="${log.logType}"/>
-					<c:if test="${log.application != null}">
-						<c:param name="webapp" value="${log.application.name}"/>
-						<c:if test="${log.context}">
-							<c:param name="context" value="${log.context}"/>
-						</c:if>
-					</c:if>
-					<c:if test="${!log.context || log.logType == 'log4j2'}">
-						<c:choose>
-							<c:when test="${log.root}">
-								<c:param name="root" value="${log.root}"/>
-							</c:when>
-							<c:otherwise>
-								<c:param name="logName" value="${log.name}"/>
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-					<c:if test="${log.index != null}">
-						<c:param name="logIndex" value="${log.index}"/>
-					</c:if>
-				</c:url>
-				<a href="${downloadUrl}">
-					<spring:message code="probe.jsp.follow.menu.download"/>
-				</a>
-			</li>
+<!-- 			<li id="download"> -->
+<%-- 				<c:url value="/logs/download" var="downloadUrl"> --%>
+<%-- 					<c:param name="logType" value="${log.logType}"/> --%>
+<%-- 					<c:if test="${log.application != null}"> --%>
+<%-- 						<c:param name="webapp" value="${log.application.name}"/> --%>
+<%-- 						<c:if test="${log.context}"> --%>
+<%-- 							<c:param name="context" value="${log.context}"/> --%>
+<%-- 						</c:if> --%>
+<%-- 					</c:if> --%>
+<%-- 					<c:if test="${!log.context || log.logType == 'log4j2'}"> --%>
+<%-- 						<c:choose> --%>
+<%-- 							<c:when test="${log.root}"> --%>
+<%-- 								<c:param name="root" value="${log.root}"/> --%>
+<%-- 							</c:when> --%>
+<%-- 							<c:otherwise> --%>
+<%-- 								<c:param name="logName" value="${log.name}"/> --%>
+<%-- 							</c:otherwise> --%>
+<%-- 						</c:choose> --%>
+<%-- 					</c:if> --%>
+<%-- 					<c:if test="${log.index != null}"> --%>
+<%-- 						<c:param name="logIndex" value="${log.index}"/> --%>
+<%-- 					</c:if> --%>
+<%-- 				</c:url> --%>
+<%-- 				<a href="${downloadUrl}"> --%>
+<%-- 					<spring:message code="probe.jsp.follow.menu.download"/> --%>
+<!-- 				</a> -->
+<!-- 			</li> -->
 		</ul>
 
 
@@ -119,97 +119,7 @@
 					<div class="ajax_activity"></div>
 				</div>
 			</div>
-
-			<h3><spring:message code="probe.jsp.follow.h3.sources"/></h3>
-
-			<display:table name="sources" class="genericTbl" style="border-spacing:0;border-collapse:separate;" uid="logsource" requestURI="">
-
-				<display:column titleKey="probe.jsp.logs.col.app" sortable="true" class="leftmost">
-					${logsource.application.name}
-				</display:column>
-
-				<display:column titleKey="probe.jsp.logs.col.type" sortable="true" property="logType"/>
-
-				<display:column titleKey="probe.jsp.logs.col.name" sortable="true">
-					<c:choose>
-						<c:when test="${logsource.context && logsource.logType != 'log4j2'}">
-							(CONTEXT)
-						</c:when>
-						<c:when test="${logsource.root}">
-							(ROOT)
-						</c:when>
-						<c:otherwise>
-							${logsource.name}
-						</c:otherwise>
-					</c:choose>
-				</display:column>
-
-				<display:column titleKey="probe.jsp.logs.col.class" sortable="true">
-					${logsource.targetClass}
-					(${logsource.index})
-				</display:column>
-
-				<display:column titleKey="probe.jsp.logs.col.level" sortable="false">
-					<c:if test="${not empty logsource.validLevels && logsource.level != null}">
-						<select id="log_${logsource_rowNum}">
-							<c:forEach items="${logsource.validLevels}" var="validLogLevel">
-								<option value="${validLogLevel}" ${validLogLevel == logsource.level ? 'selected="selected"' : ''}>${validLogLevel}</option>
-							</c:forEach>
-						</select>
-
-						<c:url value="/adm/changeloglevel.ajax" var="changeLogLevelUrl">
-							<c:param name="logType" value="${logsource.logType}"/>
-							<c:if test="${logsource.application != null}">
-								<c:param name="webapp" value="${logsource.application.name}"/>
-								<c:if test="${logsource.context}">
-									<c:param name="context" value="${logsource.context}"/>
-								</c:if>
-							</c:if>
-							<c:if test="${!logsource.context || logsource.logType == 'log4j2'}">
-								<c:choose>
-									<c:when test="${logsource.root}">
-										<c:param name="root" value="${logsource.root}"/>
-									</c:when>
-									<c:otherwise>
-										<c:param name="logName" value="${logsource.name}"/>
-									</c:otherwise>
-								</c:choose>
-							</c:if>
-							<c:if test="${logsource.index != null}">
-								<c:param name="logIndex" value="${logsource.index}"/>
-							</c:if>
-						</c:url>
-
-						<script type="text/javascript">
-							Event.observe(window, 'load', function() {
-								$('log_${logsource_rowNum}').observe('change', function(event) {
-									this.disable();
-									new Ajax.Request('${changeLogLevelUrl}', {
-										method: 'get',
-										parameters: {
-											level: this.value
-										},
-										asynchronous: true,
-										onSuccess: function(response) {
-											event.element().enable();
-										}
-									});
-								});
-							});
-						</script>
-					</c:if>
-				</display:column>
-			</display:table>
 		</div>
-
-		<c:choose>
-			<c:when test="${log.application != null}">
-				<c:set var="webapp" value="'${probe:escapeJS(log.application.name)}'" />
-			</c:when>
-			<c:otherwise>
-				<c:set var="webapp" value="null" />
-			</c:otherwise>
-		</c:choose>
 
 		<script type="text/javascript">
 
@@ -226,23 +136,16 @@
 				return captures.length > 1 ? captures[1] : lastLogSize;
 			}
 
-			var infoUpdater = new Ajax.PeriodicalUpdater('info', '<c:url value="/logs/ff_info.ajax"/>', {
+			var infoUpdater = new Ajax.PeriodicalUpdater('info', '<c:url value="/logs2/ff_info2.ajax"/>', {
 				method:'get',
 				parameters: {
-					logType: '${probe:escapeJS(log.logType)}',
-					webapp: '<c:out value="${param.webapp}" />',
-					context: '${log.context}',
-					root: '${log.root}',
-					logName: '${probe:escapeJS(log.name)}',
-					logIndex: '${probe:escapeJS(log.index)}'
+					type: '${probe:escapeJS(log.type)}',
+					name: '${probe:escapeJS(log.name)}'
 				},
 				frequency: 3,
 				onSuccess: function(response) {
-					console.log(response);
 					if (tailingEnabled) {
 						var currentLogSize = logSize(response.responseText);
-						console.log(response.responseText);
-						console.log(currentLogSize);
 						if (lastLogSize != currentLogSize) {
 							followLog(currentLogSize);
 							lastLogSize = currentLogSize;
@@ -252,15 +155,11 @@
 			});
 
 			function followLog(currentLogSize) {
-				new Ajax.Updater(file_content_div, '<c:url value="/logs/follow.ajax"/>', {
+				new Ajax.Updater(file_content_div, '<c:url value="/logs2/follow2.ajax"/>', {
 					method:'get',
 					parameters: {
-						logType: '${probe:escapeJS(log.logType)}',
-						webapp: '<c:out value="${param.webapp}" />',
-						context: '${log.context}',
-						root: '${log.root}',
-						logName: '${probe:escapeJS(log.name)}',
-						logIndex: '${probe:escapeJS(log.index)}',
+						type: '${probe:escapeJS(log.type)}',
+						name: '${probe:escapeJS(log.name)}',
 						lastKnownLength: (lastLogSize == -1 ? 0 : lastLogSize),
 						currentLength: currentLogSize,
 						maxReadLines: (lastLogSize == -1 ? initialLines : undefined)
