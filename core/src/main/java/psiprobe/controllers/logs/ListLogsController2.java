@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
+import psiprobe.Exception.NoAccessAuthorizationException;
 import psiprobe.beans.LogByDirectoryBean;
 import psiprobe.beans.LogByDirectoryResolverBean;
 
@@ -31,6 +32,8 @@ public class ListLogsController2 extends ParameterizableViewController {
 
 	/** The error view. */
 	private String errorView;
+
+	private String noAuthorizationView;
 
 	private LogByDirectoryBean logByDirectoryBean;
 
@@ -46,7 +49,15 @@ public class ListLogsController2 extends ParameterizableViewController {
 	public void setErrorView(String errorView) {
 		this.errorView = errorView;
 	}
+	public String getNoAuthorizationView() {
+		return noAuthorizationView;
+	}
 
+	@Value("logs_noDirectoryAccessAuthorization")
+	public void setNoAuthorizationView(String noAuthorizationView) {
+		this.noAuthorizationView = noAuthorizationView;
+	}
+	
 	public LogByDirectoryBean getLogByDirectoryBean() {
 		return logByDirectoryBean;
 	}
@@ -72,14 +83,19 @@ public class ListLogsController2 extends ParameterizableViewController {
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
-		List<LogByDirectoryBean> uniqueList = logByDirectoryResolver.getLogDirectory();
-		if (uniqueList != null) {
-		    ModelAndView mv = new ModelAndView(getViewName());
-		    mv.addObject("logs2", uniqueList);
-		    mv.addObject("path",LogByDirectoryBean.getPath());
-		    return mv;
+		String initPath = "C:\\SG4P";
+		try{
+			List<LogByDirectoryBean> logByDirectoryList = logByDirectoryResolver.getLogDirectory(initPath);
+			if (logByDirectoryList != null) {
+			    ModelAndView mv = new ModelAndView(getViewName());
+			    mv.addObject("logs2", logByDirectoryList);
+			    mv.addObject("path", logByDirectoryList.get(0).getPath());
+			    return mv;
+			}
+		}catch(NoAccessAuthorizationException e){
+			return new ModelAndView(noAuthorizationView);
 		}
+
 		return new ModelAndView(errorView);
 	}
 	

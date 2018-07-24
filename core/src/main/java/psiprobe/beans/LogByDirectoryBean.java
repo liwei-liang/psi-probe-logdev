@@ -31,7 +31,7 @@ public class LogByDirectoryBean {
 	/** The stdout files. */
 	private String name;
 	
-	private static String path;
+	private String path;
 
 	private String type;
 
@@ -47,12 +47,12 @@ public class LogByDirectoryBean {
 		this.file = file;
 	}
 
-	public static String getPath() {
+	public String getPath() {
 		return path;
 	}
 
-	public static void setPath(String path) {
-		LogByDirectoryBean.path = path;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public String getType() {

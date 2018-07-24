@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import psiprobe.Constant.FileType;
+import psiprobe.Exception.NoAccessAuthorizationException;
 
 /**
  * The Class LogByDirectoryResolverBean.
@@ -26,12 +27,6 @@ public class LogByDirectoryResolverBean {
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(LogByDirectoryResolverBean.class);
 
-	private String logDirectoryPath = new String();
-
-	{
-		initDirectoryToMonitor();
-	}
-
 	/**
 	 * Gets the log destinations.
 	 *
@@ -39,56 +34,55 @@ public class LogByDirectoryResolverBean {
 	 *            the all
 	 * @return the log destinations
 	 */
-	public List<LogByDirectoryBean> getLogDirectory() {
+	public List<LogByDirectoryBean> getLogDirectory(String path) throws NoAccessAuthorizationException{
 		logger.info("[LogByDirectoryResolverBean]" + "enter directory");
 		List<LogByDirectoryBean> logByDirectoryList = new ArrayList<LogByDirectoryBean>();
-		File directoryPath = new File(logDirectoryPath);
+		File directoryPath = new File(path);
 		if (directoryPath.isDirectory()) {
-			for (File file : directoryPath.listFiles()) {
-				LogByDirectoryBean.setPath(logDirectoryPath);
-				LogByDirectoryBean logByDirectoryBean = new LogByDirectoryBean();
-				logByDirectoryBean.setFile(file);
-				logByDirectoryBean.setName(logByDirectoryBean.getName());
-				logByDirectoryBean.setSize(logByDirectoryBean.getSize());
-				logByDirectoryBean.setType(file.isDirectory() ? FileType.Directory.name() : FileType.File.name());
-				logByDirectoryBean.setLastModified(logByDirectoryBean.getLastModified());
-				logByDirectoryList.add(logByDirectoryBean);
+			try{
+				for (File file : directoryPath.listFiles()) {
+					LogByDirectoryBean logByDirectoryBean = new LogByDirectoryBean();
+					logByDirectoryBean.setPath(directoryPath.getAbsolutePath());
+					logByDirectoryBean.setFile(file);
+					logByDirectoryBean.setName(logByDirectoryBean.getName());
+					logByDirectoryBean.setSize(logByDirectoryBean.getSize());
+					logByDirectoryBean.setType(file.isDirectory() ? FileType.Directory.name() : FileType.File.name());
+					logByDirectoryBean.setLastModified(logByDirectoryBean.getLastModified());
+					logByDirectoryList.add(logByDirectoryBean);
+				}
+			}catch(NullPointerException e){
+				logger.error(e.toString());
+				throw new NoAccessAuthorizationException();
 			}
+
 		}
 		return logByDirectoryList;
 	}
 
-	public LogByDirectoryBean getThisLogDirectory(String type, String name) {
+	public LogByDirectoryBean getThisLogDirectory(String type, String name, String path) {
 		logger.info("[LogByDirectoryResolverBean]" + "set the file info");
 		LogByDirectoryBean logByDirectoryBean = new LogByDirectoryBean();
-		File file = new File(LogByDirectoryBean.getPath() + "\\" + name);
-		if(file.isDirectory()){
-			
-		}
+		File file = new File(path + "\\" + name);
+		logByDirectoryBean.setPath(file.getAbsolutePath());
 		logByDirectoryBean.setFile(file);
 		logByDirectoryBean.setType(type);
-		logByDirectoryBean.setName(name);
+		logByDirectoryBean.setName("");
 		logByDirectoryBean.setSize(logByDirectoryBean.getSize());
 		logByDirectoryBean.setLastModified(logByDirectoryBean.getLastModified());
-
 		return logByDirectoryBean;
 	}
 
-	public List<LogByDirectoryBean> enterThisDirectory(String name, boolean back){
+	public List<LogByDirectoryBean> enterThisDirectory(String name, boolean back, String path) throws Exception{
+		String newPath;
 		if(!back){
-			logDirectoryPath = logDirectoryPath + "\\" + name;
+			newPath = path + "\\" + name;
 		}else{
-			logDirectoryPath = logDirectoryPath.substring(0, logDirectoryPath.lastIndexOf("\\"));
+			newPath = path.substring(0, path.lastIndexOf("\\"));
 		}
-		if(logDirectoryPath.equals("C:")){
-			logDirectoryPath += "\\";
+		if(newPath.equals("C:")){
+			newPath += "\\";
 		}
-		return getLogDirectory();
-	}
-	
-	public void initDirectoryToMonitor() {
-		logger.info("[LogByDirectoryResolverBean]" + "init directory path to monitor");
-		logDirectoryPath = "C:\\SG4P";
+		return getLogDirectory(newPath);
 	}
 
 }

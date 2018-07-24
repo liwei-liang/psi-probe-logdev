@@ -39,6 +39,7 @@
 						<li id="back">
 								<c:url value="/logs2/entreDirectory.htm" var="backUrlTest">
 									<c:param name="back" value="true"/>
+									<c:param name="path" value="${path}"/>
 								</c:url>
 							<a class="logfile" href="${backUrlTest}"> <spring:message
 								code="probe.jsp.logs2.menu.back" />
@@ -56,18 +57,20 @@
 	
 					<display:column titleKey="probe.jsp.logs.col.file" sortable="true" sortProperty="file">
 						<c:choose>
-		
+
 							<c:when test="${log.type=='File'}">
 								<c:url value="/logs2/follow2.htm" var="followUrlTest">
 									<c:param name="type" value="${log.type}"/>	
 									<c:param name="name" value="${log.name}"/>
+									<c:param name="path" value="${log.path}"/>
 								</c:url>
 							</c:when>
 		
 							<c:otherwise>
 								<c:url value="/logs2/entreDirectory.htm" var="followUrlTest">
 									<c:param name="name" value="${log.name}"/>
-									<c:param name="false" value="true"/>
+									<c:param name="path" value="${log.path}"/>
+									<c:param name="back" value="false"/>
 								</c:url>
 							</c:otherwise>
 		

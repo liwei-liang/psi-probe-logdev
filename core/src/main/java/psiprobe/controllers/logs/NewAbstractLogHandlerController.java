@@ -44,8 +44,9 @@ public abstract class NewAbstractLogHandlerController extends ParameterizableVie
 
 	    String type = ServletRequestUtils.getStringParameter(request, "type");
 	    String name = ServletRequestUtils.getStringParameter(request, "name");
-	    
-	    LogByDirectoryBean logByDirectoryBean = logByDirectoryResolver.getThisLogDirectory(type, name);
+	    String path = ServletRequestUtils.getStringParameter(request, "path");
+
+	    LogByDirectoryBean logByDirectoryBean = logByDirectoryResolver.getThisLogDirectory(type, name, path);
 
 	    ModelAndView modelAndView = null;
 	    boolean logFound = false;

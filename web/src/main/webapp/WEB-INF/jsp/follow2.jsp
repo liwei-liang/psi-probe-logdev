@@ -34,7 +34,12 @@
 
 		<ul class="options">
 			<li id="back">
-				<a href="<c:url value='/logs2/list2.htm'/>">
+				<c:url value="/logs2/entreDirectory.htm" var="backUrl">
+					<c:param name="name" value="${log.name}"/>
+					<c:param name="path" value="${log.path}"/>
+					<c:param name="back" value="true"/>
+				</c:url>
+				<a href="${backUrl}">
 					<spring:message code="probe.jsp.follow.menu.back"/>
 				</a>
 			</li>
@@ -73,7 +78,17 @@
 					<spring:message code="probe.jsp.follow.menu.clear"/>
 				</a>
 			</li>
-<!-- 			<li id="download"> -->
+			<li>
+				Number of lines to show
+				<select id="lineNum" name="lineNumVal" style="width: 90px" onchange="javaScrpit:changeLineNum()">
+					<option value="100">100</option>
+					<option value="500">500</option>
+					<option value="1000" selected>1000</option>
+					<option value="5000">5000</option>
+				</select>
+			</li>
+	
+			<!-- 			<li id="download"> -->
 <%-- 				<c:url value="/logs/download" var="downloadUrl"> --%>
 <%-- 					<c:param name="logType" value="${log.logType}"/> --%>
 <%-- 					<c:if test="${log.application != null}"> --%>
@@ -126,11 +141,10 @@
 			var file_content_div = 'file_content';
 			var topPosition = -1;
 			var tailingEnabled = true;
-			var maxLines = 1000;
-			var initialLines = 250;
+			var maxLines = 5000;
+			var initialLines = $('lineNum').value;
 			var lastLogSize = -1;
 			var logSizeRegex = /<span title="(\d*)">/;
-
 			function logSize(responseText) {
 				var captures = logSizeRegex.exec(responseText);
 				return captures.length > 1 ? captures[1] : lastLogSize;
@@ -140,7 +154,8 @@
 				method:'get',
 				parameters: {
 					type: '${probe:escapeJS(log.type)}',
-					name: '${probe:escapeJS(log.name)}'
+					path: '${probe:escapeJS(log.path)}',
+					name: ''
 				},
 				frequency: 3,
 				onSuccess: function(response) {
@@ -153,13 +168,14 @@
 					}
 				}
 			});
-
+			
 			function followLog(currentLogSize) {
 				new Ajax.Updater(file_content_div, '<c:url value="/logs2/follow2.ajax"/>', {
 					method:'get',
 					parameters: {
 						type: '${probe:escapeJS(log.type)}',
-						name: '${probe:escapeJS(log.name)}',
+						path: '${probe:escapeJS(log.path)}',
+						name: '',
 						lastKnownLength: (lastLogSize == -1 ? 0 : lastLogSize),
 						currentLength: currentLogSize,
 						maxReadLines: (lastLogSize == -1 ? initialLines : undefined)
@@ -195,6 +211,10 @@
 				});
 			}
 
+			function changeLineNum(){
+				lastLogSize = -1;
+				initialLines = $('lineNum').value;
+			}
 			//
 			// unfortunately it is not possible to set the size of "file_content" div in percent.
 			// i'm not sure why, but most likely it is a browser bug.
