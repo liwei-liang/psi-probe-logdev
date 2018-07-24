@@ -88,33 +88,15 @@
 				</select>
 			</li>
 	
-			<!-- 			<li id="download"> -->
-<%-- 				<c:url value="/logs/download" var="downloadUrl"> --%>
-<%-- 					<c:param name="logType" value="${log.logType}"/> --%>
-<%-- 					<c:if test="${log.application != null}"> --%>
-<%-- 						<c:param name="webapp" value="${log.application.name}"/> --%>
-<%-- 						<c:if test="${log.context}"> --%>
-<%-- 							<c:param name="context" value="${log.context}"/> --%>
-<%-- 						</c:if> --%>
-<%-- 					</c:if> --%>
-<%-- 					<c:if test="${!log.context || log.logType == 'log4j2'}"> --%>
-<%-- 						<c:choose> --%>
-<%-- 							<c:when test="${log.root}"> --%>
-<%-- 								<c:param name="root" value="${log.root}"/> --%>
-<%-- 							</c:when> --%>
-<%-- 							<c:otherwise> --%>
-<%-- 								<c:param name="logName" value="${log.name}"/> --%>
-<%-- 							</c:otherwise> --%>
-<%-- 						</c:choose> --%>
-<%-- 					</c:if> --%>
-<%-- 					<c:if test="${log.index != null}"> --%>
-<%-- 						<c:param name="logIndex" value="${log.index}"/> --%>
-<%-- 					</c:if> --%>
-<%-- 				</c:url> --%>
-<%-- 				<a href="${downloadUrl}"> --%>
-<%-- 					<spring:message code="probe.jsp.follow.menu.download"/> --%>
-<!-- 				</a> -->
-<!-- 			</li> -->
+			<li id="download">
+				<c:url value="/logs2/download2" var="downloadUrl">
+					<c:param name="name" value=""/>
+					<c:param name="path" value="${log.path}"/>
+				</c:url>
+				<a href="${downloadUrl}">
+					<spring:message code="probe.jsp.follow.menu.download"/>
+				</a>
+			</li>
 		</ul>
 
 
