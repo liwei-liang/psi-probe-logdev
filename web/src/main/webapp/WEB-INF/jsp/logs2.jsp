@@ -82,7 +82,7 @@
 					</display:column>
 
 					<display:column titleKey="probe.jsp.logs.col.Download">
-						<c:if test="${log.type == 'File'}">
+						<c:if test="${log.type == 'File' || log.type == 'Zip'}">
 						<c:url value="/logs2/download2" var="downloadUrl">
 							<c:param name="name" value="${log.name}"/>
 							<c:param name="path" value="${log.path}"/>
@@ -91,13 +91,24 @@
 							class="lnk" src="${pageContext.request.contextPath}<spring:theme code='download.png'/>"
 							alt="<spring:message code='probe.jsp.logs.download.alt'/>"/>
 						</a>
+							<c:if test="${log.type == 'File'}">
 						<a class="imglink" title="download compressed" href="${downloadUrl}&compressed=true"><img
 								class="lnk" src="${pageContext.request.contextPath}<spring:theme code='download_compressed.png'/>"
 								alt="<spring:message code='probe.jsp.logs.download.alt'/>"/></a>
+								</c:if>
 						</c:if>
 					</display:column>
 					
 					<display:column titleKey="probe.jsp.logs.col.Unzip">
+						<c:if test="${log.type == 'Zip'}">
+						<c:url value="/logs2/Unzip" var="unZipUrl">
+							<c:param name="name" value="${log.name}"/>
+							<c:param name="path" value="${log.path}"/>
+						</c:url>
+						<a class="logfile" href="${unZipUrl}"> <spring:message
+								code="probe.jsp.logs2.unzip" />
+						</a>
+						</c:if>
 						
 					</display:column>
 					

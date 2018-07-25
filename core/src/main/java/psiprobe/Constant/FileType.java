@@ -11,5 +11,5 @@
 package psiprobe.Constant;
 
 public enum FileType {
-	Directory,File;
+	Directory,File,Zip;
 }
