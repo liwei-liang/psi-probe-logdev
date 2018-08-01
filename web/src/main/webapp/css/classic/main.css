@@ -840,3 +840,11 @@ td.inputCell {
 .connectorCertificates {
 	padding-left: 20px;
 }
+
+.hightRed {
+	color: red;
+}
+
+.hightYellow {
+	background-color: orange;
+}

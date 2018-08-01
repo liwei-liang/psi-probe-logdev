@@ -18,14 +18,20 @@
 
 <%-- Log file view. The view is a simple markup that gets updated via AJAX calls. Top menu does not go to the server but
  rather does DOM tricks to modify content appearance. --%>
-
+<style>
+::selection {
+	color: red;
+}
+</style>
 <html>
 	<head>
 		<title><spring:message code="probe.jsp.title.follow"/></title>
+		<script type="text/javascript" src="<c:url value='/js/jquery-3.3.1.min.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/js/prototype.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/js/scriptaculous/scriptaculous.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/js/func.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/js/behaviour.js'/>"></script>
+		<script type="text/javascript" src="<c:url value='/js/hightLight.js'/>"></script>
 	</head>
 
 	<c:set var="navTabLogs2" value="active" scope="request"/>
@@ -113,13 +119,13 @@
 
 			<div class="shaper">
 				<div id="file_content" class="fixed_width">
-					<div class="ajax_activity"></div>
+					<div id="ajaxContent" class="ajax_activity"></div>
 				</div>
 			</div>
 		</div>
 
 		<script type="text/javascript">
-
+			var logLevel = new Array("TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL");
 			var file_content_div = 'file_content';
 			var topPosition = -1;
 			var tailingEnabled = true;
@@ -127,6 +133,7 @@
 			var initialLines = $('lineNum').value;
 			var lastLogSize = -1;
 			var logSizeRegex = /<span title="(\d*)">/;
+			
 			function logSize(responseText) {
 				var captures = logSizeRegex.exec(responseText);
 				return captures.length > 1 ? captures[1] : lastLogSize;
@@ -292,7 +299,15 @@
 					new Ajax.Request('<c:url value="/remember.ajax"/>?cn=file_content_font_size&state=' + new_size, {method:'get',asynchronous:true});
 				}
 			}
-
+			
+			jQuery(document).ready(function(){
+				jQuery(".fixed_width").dblclick(function(){
+					if (window.getSelection) {
+	                	txt = window.getSelection()+"";
+	       			}
+					heightByKeyWord(txt);
+				  });
+			});
 		</script>
 
 		<c:if test="${cookie['file_content_font_size'] != null}">

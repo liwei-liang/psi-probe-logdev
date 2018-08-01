@@ -12,8 +12,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<script type="text/javascript">
+var fixed_width ='fixed_width'
+</script>
 <%-- An AJAX HTML bit, representing log file content. --%>
-<c:forEach items="${lines}" var="line">
-	<div class="line"><c:out value="${line}" escapeXml="true" /></div>
-</c:forEach>
+
+<div id = "lineContent" >
+	<c:forEach items="${lines}" var="line">
+		<div class="line"><c:out value="${line}" escapeXml="true" /></div>
+	</c:forEach>
+</div>
+<a class="Operation" href="javaScript:highlight('[INFO]')">
+HightError
+</a>
+<div>Keyword: <input type="text" name="keyword" id="highLishtBtn" >
+    <button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button>
+</div>
+<div id="text">Hight light the key word</div>

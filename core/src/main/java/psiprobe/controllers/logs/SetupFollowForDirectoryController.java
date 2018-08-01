@@ -10,6 +10,7 @@
  */
 package psiprobe.controllers.logs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import psiprobe.Exception.NoAccessAuthorizationException;
 import psiprobe.beans.LogByDirectoryBean;
 import psiprobe.beans.LogByDirectoryResolverBean;
+import psiprobe.beans.PathLevelBean;
 
 @Controller
 public class SetupFollowForDirectoryController extends ParameterizableViewController {
@@ -80,14 +82,32 @@ public class SetupFollowForDirectoryController extends ParameterizableViewContro
 		try {
 
 			List<LogByDirectoryBean> logByDirectoryList = logByDirectoryResolver.enterThisDirectory(name, back, path);
-
+			List<PathLevelBean> pathLevelBeans = new ArrayList<>();
+			
 			if (logByDirectoryList != null) {
 				ModelAndView mv = new ModelAndView(getViewName());
 				mv.addObject("logs2", logByDirectoryList);
-				if(!back){
-					mv.addObject("path", path + "\\" + name);
-				}else{
+				if(logByDirectoryList.isEmpty()){
+					String[] pathLevels;
+					if(back){
+						pathLevels = (path).split("\\\\");
+					}else{
+						pathLevels = (path + "\\" + name).split("\\\\");
+					}
+					buildPathLevel(pathLevels, pathLevelBeans);
+					if(name == null){
+						mv.addObject("path", path.substring(0,path.length()-1));
+					}else{
+						mv.addObject("path", path + "\\" + name);
+
+					}
+					mv.addObject("pathLevels", pathLevelBeans);
+				}
+				else{
+					String[] pathLevels = logByDirectoryList.get(0).getPath().split("\\\\");
+					buildPathLevel(pathLevels, pathLevelBeans);
 					mv.addObject("path", logByDirectoryList.get(0).getPath());
+					mv.addObject("pathLevels", pathLevelBeans);
 				}
 				return mv;
 			}
@@ -96,6 +116,17 @@ public class SetupFollowForDirectoryController extends ParameterizableViewContro
 		}
 
 		return new ModelAndView(errorView);
+	}
+
+	private void buildPathLevel(String[] pathLevels, List<PathLevelBean> pathLevelBeans) {
+		StringBuilder builder = new StringBuilder();
+		for(String pathLevel: pathLevels){
+			builder.append(pathLevel+"\\");
+			PathLevelBean pathLevelBean = new PathLevelBean();
+			pathLevelBean.setCurrentDirectory(pathLevel);
+			pathLevelBean.setPathLevel(builder.toString());
+			pathLevelBeans.add(pathLevelBean);
+		}
 	}
 
 	@Value("logs2")

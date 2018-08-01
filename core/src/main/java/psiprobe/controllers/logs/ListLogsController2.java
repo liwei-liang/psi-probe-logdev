@@ -10,6 +10,7 @@
  */
 package psiprobe.controllers.logs;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import psiprobe.Exception.NoAccessAuthorizationException;
 import psiprobe.beans.LogByDirectoryBean;
 import psiprobe.beans.LogByDirectoryResolverBean;
+import psiprobe.beans.PathLevelBean;
 
 /**
  * The Class ListLogsController.
@@ -83,13 +85,19 @@ public class ListLogsController2 extends ParameterizableViewController {
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String initPath = "C:\\SG4P";
+		String initPath = "C:\\";
 		try{
+			List<PathLevelBean> pathLevelBeans = new ArrayList<>();
 			List<LogByDirectoryBean> logByDirectoryList = logByDirectoryResolver.getLogDirectory(initPath);
 			if (logByDirectoryList != null) {
+				PathLevelBean pathLevelBean = new PathLevelBean();
+				pathLevelBean.setPathLevel(initPath);
+				pathLevelBean.setCurrentDirectory(initPath);
+				pathLevelBeans.add(pathLevelBean);
 			    ModelAndView mv = new ModelAndView(getViewName());
 			    mv.addObject("logs2", logByDirectoryList);
 			    mv.addObject("path", logByDirectoryList.get(0).getPath());
+			    mv.addObject("pathLevels", pathLevelBeans);
 			    return mv;
 			}
 		}catch(NoAccessAuthorizationException e){

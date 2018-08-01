@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -28,7 +30,8 @@ import psiprobe.tools.BackwardsLineReader;
 
 @Controller
 public class FollowController2 extends NewAbstractLogHandlerController{
-	
+	private static final Logger logger = LoggerFactory.getLogger(FollowController2.class);
+
 	  @RequestMapping(path = "/follow2.ajax")
 	  @Override
 	  public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +45,7 @@ public class FollowController2 extends NewAbstractLogHandlerController{
 
 	    ModelAndView mv = new ModelAndView(getViewName());
 	    File file = logByDirectoryBean.getFile();
-
+	    logger.info("Get the new content of this file:" + file.getAbsolutePath());
 	    if (file.exists()) {
 	      LinkedList<String> lines = new LinkedList<>();
 	      long actualLength = file.length();

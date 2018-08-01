@@ -33,9 +33,18 @@
 		<div class="blockContainer">
 			<div class="shadow">
 				<div class="info" style="padding-bottom: 10px;">
-					<span class="value"> <probe:out value="${path}" maxLength="80"
-							ellipsisRight="false" /></span>
-					<ul class="options" >
+<%-- 					<span class="value"> <probe:out value="${path}" maxLength="80" --%>
+<%-- 							ellipsisRight="false" />  --%>
+					<span style = "font-size : 0px">
+						<c:forEach var="level" items="${pathLevels}">
+							<c:url value="/logs2/entreDirectory.htm" var="levelPath">
+								<c:param name="back" value="true"/>
+								<c:param name="path" value="${level.pathLevel}"/>
+							</c:url>
+								<a class="logfile" href="${levelPath}" style = "font-size : 13px"><probe:out value="${level.currentDirectory}\\"/></a>
+						</c:forEach>
+					</span>
+					<ul class="options" >	
 						<li id="back">
 								<c:url value="/logs2/entreDirectory.htm" var="backUrlTest">
 									<c:param name="back" value="true"/>

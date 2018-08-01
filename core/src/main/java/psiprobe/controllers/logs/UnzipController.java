@@ -11,7 +11,6 @@
 package psiprobe.controllers.logs;
 
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +28,7 @@ import psiprobe.beans.LogByDirectoryResolverBean;
 @Controller
 public class UnzipController extends ParameterizableViewController {
 	private String errorView;
-
+	
 	public String getErrorView() {
 		return errorView;
 	}
