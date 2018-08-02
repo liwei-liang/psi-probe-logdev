@@ -1,11 +1,24 @@
-
-var hightMark = 0;
+/*
+ * Licensed under the GPL License. You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ *
+ * THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE.
+ */
+var hightColorMap = new Map();
+var red = "red";
+var orange = "orange";
+hightColorMap.set(red, false);
+hightColorMap.set(orange, false);
 
 function highlight(keyword) {
-	var textbox = $('lineContent');
+	var textbox = $('file_content');
 	var temp = textbox.innerHTML;
-	if(hightMark%2==0){
-		
+	console.log(hightColorMap);
+	if(!hightColorMap.get(red)){
 		if ("" == keyword) return;
 		words = decodeURIComponent(keyword.replace(/\,/g, ' ')).split(/\s+/);
 		for (w = 0; w < words.length; w++) {
@@ -14,7 +27,7 @@ function highlight(keyword) {
 			temp = temp.replace(r, "<span class='hightRed'>$1</span>$2");
 			console.log(r);
 		}
-		hightMark++;
+		hightColorMap.set(red, true);
 	}
 	else{
 		words = decodeURIComponent(keyword.replace(/\,/g, ' ')).split(/\s+/);
@@ -22,7 +35,7 @@ function highlight(keyword) {
 			var r = new RegExp("(<span.+?Red.*?>)", "g");
 			temp = temp.replace(r, "");
 		}
-		hightMark++;
+		hightColorMap.set(red, false);
 	}
 	textbox.innerHTML = temp;
 }
@@ -63,25 +76,34 @@ function highlight2(keyword) {
 function getKeywordRegExp(keyword) {
 	return new RegExp("(<(?!font)[^>]+>|(>[^<]*[\\W]{1}?))(" + keyword.replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&") + ")(([\\W][^>]*<)|<)", "ig");
 }
-function lol(match,keyword) {
-	var replaceText = "$1<font class='hightYellow'>$3</font>$4";
-	r = getKeywordRegExp(keyword);
+
+function getAllKeywordRegExp(keyword) {
+	return new RegExp("(<(?!font)[^>]+>[^<]*?)(" + keyword.replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&") + ")([^>]*<)", "ig");
+}
+
+function lol(match,keyword,getAllWord) {
+	if(getAllWord){
+		var replaceText = "$1<font class='hightOrange'>$2</font>$3";
+		r = getAllKeywordRegExp(keyword);
+	}else{
+		var replaceText = "$1<font class='hightOrange'>$3</font>$4";
+		r = getKeywordRegExp(keyword);
+	}
 	var tag = r.exec(match);
 	match =  match.replace(r,replaceText);
 	if(tag){
-		return lol(match,keyword);
+		return lol(match,keyword,getAllWord);
 	}
     return match ;
 };
 
-var heightWordMark = false;
 var insKeyWord = "";
-function setHeightKeyWord(keyword) {
+function setHeightKeyWord(keyword,getAllWord) {
 	keyword = keyword.trim();
-	var textbox = $('lineContent');
+	var textbox = $('file_content');
 	
 	var tempHTML = textbox.innerHTML;
-	if(heightWordMark && insKeyWord != keyword){
+	if(hightColorMap.get(orange) && insKeyWord != keyword){
 		var r = new RegExp("(<.?font.*?>)", "g");
 		tempHTML = tempHTML.replace(r, "");
 	}
@@ -89,18 +111,22 @@ function setHeightKeyWord(keyword) {
 		textbox.innerHTML = tempHTML;
 		return;
 	}
-    tempHTML = tempHTML.replace(getKeywordRegExp(keyword), function(match){ return lol(match,keyword); });
+	if(getAllWord){
+	    tempHTML = tempHTML.replace(getAllKeywordRegExp(keyword), function(match){ return lol(match,keyword,getAllWord); });
+	}else{
+	    tempHTML = tempHTML.replace(getKeywordRegExp(keyword), function(match){ return lol(match,keyword,getAllWord); });
+	}
 	textbox.innerHTML = tempHTML;
-    heightWordMark = true;
+	hightColorMap.set(orange, true);
     insKeyWord = keyword;
 }
 
 function heightKeyWord() {
     var $keyword = $('highLishtBtn').value;
-    setHeightKeyWord($keyword)
+    setHeightKeyWord($keyword,true)
 }
 
 function heightByKeyWord(keyword) {
 	console.log(keyword);
-    setHeightKeyWord(keyword)
+    setHeightKeyWord(keyword,false)
 }

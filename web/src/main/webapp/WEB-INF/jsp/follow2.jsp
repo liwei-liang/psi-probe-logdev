@@ -122,7 +122,15 @@
 					<div id="ajaxContent" class="ajax_activity"></div>
 				</div>
 			</div>
+
+		<a class="Operation" href="javaScript:highlight('[INFO]')">
+			HightError </a>
+		<div>
+			Keyword: <input type="text" name="keyword" id="highLishtBtn">
+			<button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button>
 		</div>
+		<div id="text">Hight light the key word</div>
+	</div>
 
 		<script type="text/javascript">
 			var logLevel = new Array("TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL");

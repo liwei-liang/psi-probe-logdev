@@ -22,10 +22,3 @@ var fixed_width ='fixed_width'
 		<div class="line"><c:out value="${line}" escapeXml="true" /></div>
 	</c:forEach>
 </div>
-<a class="Operation" href="javaScript:highlight('[INFO]')">
-HightError
-</a>
-<div>Keyword: <input type="text" name="keyword" id="highLishtBtn" >
-    <button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button>
-</div>
-<div id="text">Hight light the key word</div>
