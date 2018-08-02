@@ -123,7 +123,7 @@
 				</div>
 			</div>
 
-		<a class="Operation" href="javaScript:highlight('[INFO]')">
+		<a class="Operation" href="javaScript:highlight('ERROR]')">
 			HightError </a>
 		<div>
 			Keyword: <input type="text" name="keyword" id="highLishtBtn">
@@ -309,12 +309,12 @@
 			}
 			
 			jQuery(document).ready(function(){
-				jQuery(".fixed_width").dblclick(function(){
-					if (window.getSelection) {
-	                	txt = window.getSelection()+"";
-	       			}
-					heightByKeyWord(txt);
-				  });
+// 				jQuery(".fixed_width").dblclick(function(){
+// 					if (window.getSelection) {
+// 	                	txt = window.getSelection()+"";
+// 	       			}
+// 					heightByKeyWord(txt);
+// 				  });
 			});
 		</script>
 
