@@ -22,7 +22,7 @@ function highlight(keyword) {
 		if ("" == keyword) return;
 		words = decodeURIComponent(keyword.replace(/\,/g, ' ')).split(/\s+/);
 		for (w = 0; w < words.length; w++) {
-			var processedKeyword = words[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&")
+			var processedKeyword = words[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&");
 			var r = new RegExp("(<div[^>]+>.?" + processedKeyword + ".*?</div>(\\s*<div[^>]+>(?!\\[).*?</div>)*)", "g");
 			temp = temp.replace(r, "<span class='hightRed'>$1</span>");
 			console.log(r);
