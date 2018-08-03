@@ -315,12 +315,12 @@
 			}
 			
 			jQuery(document).ready(function(){
-				jQuery(".fixed_width").dblclick(function(){
-					if (window.getSelection) {
-	                	txt = window.getSelection()+"";
-	       			}
-					heightByKeyWord(txt);
-				  });
+// 				jQuery(".fixed_width").dblclick(function(){
+// 					if (window.getSelection) {
+// 	                	txt = window.getSelection()+"";
+// 	       			}
+// 					heightByKeyWord(txt);
+// 				  });
 			});
 		</script>
 
