@@ -10,6 +10,8 @@
  */
 package psiprobe.controllers.logs;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import psiprobe.beans.LogByDirectoryBean;
 import psiprobe.beans.LogByDirectoryResolverBean;
+import psiprobe.beans.PathLevelBean;
 
 @Controller
 public class UnzipController extends ParameterizableViewController {
@@ -62,10 +65,18 @@ public class UnzipController extends ParameterizableViewController {
 		String name = ServletRequestUtils.getStringParameter(request, "name");
 
 		List<LogByDirectoryBean> logByDirectoryList = logByDirectoryResolver.UnzipHere(path, name);
+
+
 		if (logByDirectoryList != null) {
+			List<File> rootsList = logByDirectoryResolver.getRootsList();
+			List<PathLevelBean> pathLevelBeans = new ArrayList<>();
+			String[] pathLevels = logByDirectoryList.get(0).getPath().split("\\\\");
+			logByDirectoryResolver.buildPathLevel(pathLevels, pathLevelBeans);
 			ModelAndView mv = new ModelAndView(getViewName());
 			mv.addObject("logs2", logByDirectoryList);
 			mv.addObject("path", logByDirectoryList.get(0).getPath());
+		    mv.addObject("rootsList", rootsList);
+			mv.addObject("pathLevels", pathLevelBeans);
 			return mv;
 		}
 

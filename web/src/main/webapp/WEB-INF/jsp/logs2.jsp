@@ -33,8 +33,6 @@
 		<div class="blockContainer">
 			<div class="shadow">
 				<div class="info" style="padding-bottom: 10px;">
-<%-- 					<span class="value"> <probe:out value="${path}" maxLength="80" --%>
-<%-- 							ellipsisRight="false" />  --%>
 					<span style = "font-size : 0px">
 						<c:forEach var="level" items="${pathLevels}">
 							<c:url value="/logs2/entreDirectory.htm" var="levelPath">
@@ -44,7 +42,26 @@
 								<a class="logfile" href="${levelPath}" style = "font-size : 13px"><probe:out value="${level.currentDirectory}\\"/></a>
 						</c:forEach>
 					</span>
-					<ul class="options" >	
+				<ul class="options">
+					<li style="padding-left: 0px;"><a class="imglink"
+						onclick="showDisKList()"
+						href="#">
+							<img class="lnk"
+							src="${pageContext.request.contextPath}<spring:theme code='delete.png'/>"
+							alt="<spring:message code='probe.jsp.threads.stop.alt'/>" />
+					</a></li>
+					<li id="chooseDisk" style="display: none;">
+						<span>Change root</span>
+						<select style="width: 90px"
+						onchange="javaScrpit:changeDisk(this.value)">
+							<option value="C:\" selected = "selected"></option>
+							<c:forEach items="${rootsList}" var="rootsList">
+								<option value="${rootsList}"><probe:out value="${rootsList}"/></option>
+							</c:forEach>
+						</select>
+					</li>
+				</ul>
+				<ul class="options" >	
 						<li id="back">
 								<c:url value="/logs2/entreDirectory.htm" var="backUrlTest">
 									<c:param name="back" value="true"/>
@@ -131,5 +148,17 @@
 					
 				</display:table>
 		</div>
+		<script type="text/javascript">
+			function showDisKList(){
+			    var element = document.getElementById("chooseDisk");
+			    element.style.display = "";
+			}
+			
+			function changeDisk(root){
+				root=root.substring(0,root.length-2)
+				var url = "/probe/logs2/entreDirectory.htm?back=true&path="+root+"%3a%5c#";
+				window.location.href=url;
+			}
+		</script>
 	</body>
 </html>

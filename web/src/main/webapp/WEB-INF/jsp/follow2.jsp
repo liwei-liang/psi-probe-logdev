@@ -115,21 +115,21 @@
 				</div>
 			</div>
 
-			<h3><spring:message code="probe.jsp.follow.h3.fileContent"/></h3>
+		<h3 id="h3Activity">
+			<spring:message code="probe.jsp.follow.h3.fileContent" />&nbsp  &nbsp &nbsp  &nbsp
+			<a class="Operation" href="javaScript:highlight('ERROR')">
+				  HightError </a> &nbsp &nbsp 
+			<span>
+				Keyword: <input type="text" name="keyword" id="highLishtBtn">
+				<button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button>
+			</span>
+		</h3>
 
-			<div class="shaper">
+		<div class="shaper">
 				<div id="file_content" class="fixed_width">
 					<div id="ajaxContent" class="ajax_activity"></div>
 				</div>
-			</div>
-
-		<a class="Operation" href="javaScript:highlight('[INFO]')">
-			HightError </a>
-		<div>
-			Keyword: <input type="text" name="keyword" id="highLishtBtn">
-			<button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button>
 		</div>
-		<div id="text">Hight light the key word</div>
 	</div>
 
 		<script type="text/javascript">
@@ -179,6 +179,10 @@
 					},
 					insertion: (lastLogSize == -1 ? undefined : 'bottom'),
 					onComplete: function() {
+					    var element = document.getElementById("h3Activity");
+					    element.classList.remove("ajax_activity");
+					    highlight('[ERROR]');
+					    highlight('[ERROR]');
 						objDiv = document.getElementById(file_content_div);
 						if (topPosition == -1) {
 							objDiv.scrollTop = objDiv.scrollHeight;
@@ -211,6 +215,8 @@
 			function changeLineNum(){
 				lastLogSize = -1;
 				initialLines = $('lineNum').value;
+			    var element = document.getElementById("h3Activity");
+			    element.classList.add("ajax_activity");
 			}
 			//
 			// unfortunately it is not possible to set the size of "file_content" div in percent.

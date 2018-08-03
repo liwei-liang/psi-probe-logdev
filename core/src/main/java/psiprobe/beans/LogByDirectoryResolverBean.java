@@ -213,4 +213,20 @@ public class LogByDirectoryResolverBean {
 
 		return getLogDirectory(destPath);
 	}
+	
+	public List<File> getRootsList(){
+		File[] roots = File.listRoots();
+		return Arrays.asList(roots);
+	}
+	
+	public void buildPathLevel(String[] pathLevels, List<PathLevelBean> pathLevelBeans) {
+		StringBuilder builder = new StringBuilder();
+		for(String pathLevel: pathLevels){
+			builder.append(pathLevel+"\\");
+			PathLevelBean pathLevelBean = new PathLevelBean();
+			pathLevelBean.setCurrentDirectory(pathLevel);
+			pathLevelBean.setPathLevel(builder.toString());
+			pathLevelBeans.add(pathLevelBean);
+		}
+	}
 }

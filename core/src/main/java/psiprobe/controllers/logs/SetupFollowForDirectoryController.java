@@ -10,6 +10,7 @@
  */
 package psiprobe.controllers.logs;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,8 +86,10 @@ public class SetupFollowForDirectoryController extends ParameterizableViewContro
 			List<PathLevelBean> pathLevelBeans = new ArrayList<>();
 			
 			if (logByDirectoryList != null) {
+				List<File> rootsList = logByDirectoryResolver.getRootsList();
 				ModelAndView mv = new ModelAndView(getViewName());
 				mv.addObject("logs2", logByDirectoryList);
+			    mv.addObject("rootsList", rootsList);
 				if(logByDirectoryList.isEmpty()){
 					String[] pathLevels;
 					if(back){
@@ -94,7 +97,7 @@ public class SetupFollowForDirectoryController extends ParameterizableViewContro
 					}else{
 						pathLevels = (path + "\\" + name).split("\\\\");
 					}
-					buildPathLevel(pathLevels, pathLevelBeans);
+					logByDirectoryResolver.buildPathLevel(pathLevels, pathLevelBeans);
 					if(name == null){
 						mv.addObject("path", path.substring(0,path.length()-1));
 					}else{
@@ -105,7 +108,7 @@ public class SetupFollowForDirectoryController extends ParameterizableViewContro
 				}
 				else{
 					String[] pathLevels = logByDirectoryList.get(0).getPath().split("\\\\");
-					buildPathLevel(pathLevels, pathLevelBeans);
+					logByDirectoryResolver.buildPathLevel(pathLevels, pathLevelBeans);
 					mv.addObject("path", logByDirectoryList.get(0).getPath());
 					mv.addObject("pathLevels", pathLevelBeans);
 				}
@@ -116,17 +119,6 @@ public class SetupFollowForDirectoryController extends ParameterizableViewContro
 		}
 
 		return new ModelAndView(errorView);
-	}
-
-	private void buildPathLevel(String[] pathLevels, List<PathLevelBean> pathLevelBeans) {
-		StringBuilder builder = new StringBuilder();
-		for(String pathLevel: pathLevels){
-			builder.append(pathLevel+"\\");
-			PathLevelBean pathLevelBean = new PathLevelBean();
-			pathLevelBean.setCurrentDirectory(pathLevel);
-			pathLevelBean.setPathLevel(builder.toString());
-			pathLevelBeans.add(pathLevelBean);
-		}
 	}
 
 	@Value("logs2")

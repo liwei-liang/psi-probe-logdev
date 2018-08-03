@@ -10,6 +10,7 @@
  */
 package psiprobe.controllers.logs;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -90,6 +91,7 @@ public class ListLogsController2 extends ParameterizableViewController {
 			List<PathLevelBean> pathLevelBeans = new ArrayList<>();
 			List<LogByDirectoryBean> logByDirectoryList = logByDirectoryResolver.getLogDirectory(initPath);
 			if (logByDirectoryList != null) {
+				List<File> rootsList = logByDirectoryResolver.getRootsList();
 				PathLevelBean pathLevelBean = new PathLevelBean();
 				pathLevelBean.setPathLevel(initPath);
 				pathLevelBean.setCurrentDirectory(initPath);
@@ -98,6 +100,7 @@ public class ListLogsController2 extends ParameterizableViewController {
 			    mv.addObject("logs2", logByDirectoryList);
 			    mv.addObject("path", logByDirectoryList.get(0).getPath());
 			    mv.addObject("pathLevels", pathLevelBeans);
+			    mv.addObject("rootsList", rootsList);
 			    return mv;
 			}
 		}catch(NoAccessAuthorizationException e){
