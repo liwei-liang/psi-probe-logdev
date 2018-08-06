@@ -91,7 +91,7 @@
 							</c:when>
 							<c:when test="${log.type=='Zip'}">
 								<i class="imglink" ><img
-									class="lnk" src="${pageContext.request.contextPath}<spring:theme code='zip.png'/>"/>
+									class="lnk" src="${pageContext.request.contextPath}<spring:theme code='download_compressed.png'/>"/>
 								</i>
 							</c:when>
 							<c:otherwise>
@@ -150,8 +150,8 @@
 							<c:param name="name" value="${log.name}"/>
 							<c:param name="path" value="${log.path}"/>
 						</c:url>
-						<a class="logfile" title="unzip" href="${unZipUrl}"> <spring:message
-								code="probe.jsp.logs2.unzip" />
+						<a class="logfile" title="unzip" href="${unZipUrl}"> <img
+								class="lnk" src="${pageContext.request.contextPath}<spring:theme code='unzip.png'/>"/>
 						</a>
 						</c:if>
 						
