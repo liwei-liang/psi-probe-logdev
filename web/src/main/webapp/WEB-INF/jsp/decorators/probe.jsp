@@ -150,11 +150,6 @@
 					</a>
 				</li>
 				<li>
-					<a href="<c:url value='/logs2/list.htm'/>">
-						<spring:message code="probe.jsp.menu.logs"/>
-					</a>
-				</li>
-				<li>
 					<a href="<c:url value='/threads.htm'/>">
 						<spring:message code="probe.jsp.menu.threads"/>
 					</a>
@@ -179,9 +174,14 @@
 						<spring:message code="probe.jsp.menu.certificates"/>
 					</a>
 				</li>
-				<li class="last">
+				<li>
 					<a href="<c:url value='/quickcheck.htm'/>">
 						<spring:message code="probe.jsp.menu.quickcheck"/>
+					</a>
+				</li>
+				<li class="last">
+					<a href="<c:url value='/sgcio.htm'/>">
+						<spring:message code="probe.jsp.menu.sgcio"/>
 					</a>
 				</li>
 			</ul>
