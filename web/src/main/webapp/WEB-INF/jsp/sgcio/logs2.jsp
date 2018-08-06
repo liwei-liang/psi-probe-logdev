@@ -27,13 +27,14 @@
 			<script type="text/javascript" src="<c:url value='/js/jquery-3.3.1.min.js'/>"></script>
 	</head>
 
+	<c:set var="navSgcio" value="active" scope="request"/>
+
 	<c:set var="navTabLogs2" value="active" scope="request"/>
 
 	<body>
 
-
-		<div class="blockContainer">
-			<div class="shadow">
+		<div class="blockContainer" >
+			<div class="shadow" style="margin-bottom: 0px;">
 				<div class="info" style="padding-bottom: 10px;">
 				<span style="font-size: 0px">
 					<ul class="options" style="padding-bottom: 0px;">

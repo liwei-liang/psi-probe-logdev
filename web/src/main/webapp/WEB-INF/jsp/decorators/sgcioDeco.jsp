@@ -129,7 +129,7 @@
 				</page:applyDecorator>
 			</c:when>
 			<c:otherwise>
-				<div id="mainBody">
+				<div id="mainBody"  style="padding-top: 0px;">
 					<decorator:body/>
 				</div>
 			</c:otherwise>
