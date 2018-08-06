@@ -85,7 +85,7 @@
 				</a>
 			</li>
 			<li>
-				Number of lines to show
+				<spring:message code="probe.jsp.follow2.number.line"/>
 				<select id="lineNum" name="lineNumVal" style="width: 90px" onchange="javaScrpit:changeLineNum()">
 					<option value="100">100</option>
 					<option value="500">500</option>
@@ -117,12 +117,12 @@
 
 		<h3 id="h3Activity">
 			<spring:message code="probe.jsp.follow.h3.fileContent" />&nbsp  &nbsp &nbsp  &nbsp
-			<a class="Operation" href="javaScript:highlight('ERROR')">
-				  HightError </a> &nbsp &nbsp 
-			<span>
-				Keyword: <input type="text" name="keyword" id="highLishtBtn">
-				<button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button>
-			</span>
+			<a class="Operation" href="javaScript:highlight()">
+				  <spring:message code="probe.jsp.logs2.highlight.level"/> </a>
+<!-- &nbsp &nbsp<span> -->
+<!-- 				Keyword: <input type="text" name="keyword" id="highLishtBtn"> -->
+<!-- 				<button id="btn" onclick="javaScript:heightKeyWord()">HightLight</button> -->
+<!-- 			</span> -->
 		</h3>
 
 		<div class="shaper">
@@ -181,8 +181,8 @@
 					onComplete: function() {
 					    var element = document.getElementById("h3Activity");
 					    element.classList.remove("ajax_activity");
-					    highlight('[ERROR]');
-					    highlight('[ERROR]');
+					    highlight();
+					    highlight();
 						objDiv = document.getElementById(file_content_div);
 						if (topPosition == -1) {
 							objDiv.scrollTop = objDiv.scrollHeight;
@@ -315,12 +315,13 @@
 			}
 			
 			jQuery(document).ready(function(){
-// 				jQuery(".fixed_width").dblclick(function(){
-// 					if (window.getSelection) {
-// 	                	txt = window.getSelection()+"";
-// 	       			}
-// 					heightByKeyWord(txt);
-// 				  });
+				highlight();
+ 				jQuery(".fixed_width").dblclick(function(){
+ 					if (window.getSelection) {
+ 	                	txt = window.getSelection()+"";
+ 	       			}
+ 					heightByKeyWord(txt);
+ 				  });
 			});
 		</script>
 

@@ -845,6 +845,18 @@ td.inputCell {
 	color: red;
 }
 
-.hightOrange {
-	background-color: orange;
+.hightBlue {
+	background-color: #00ffff;
+}
+
+.hightERROR {
+	color: red;
+}
+
+.hightWARN {
+	color: #ff8000;
+}
+
+.hightDEBUG {
+	color: #0530fa;
 }

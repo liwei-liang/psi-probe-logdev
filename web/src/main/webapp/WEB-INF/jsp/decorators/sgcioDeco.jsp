@@ -113,7 +113,15 @@
 				</li>
 			</ul>
 		</div>
-
+		<div id="navcontainer" style="padding-top: 10px;">
+			<ul id="tabnav">
+				<li>
+					<a class="${navTabLogs2}" href="<c:url value='/logs2/list2.htm'/>">
+						<spring:message code="probe.jsp.menu.logs2"/>
+					</a>
+				</li>
+			</ul>
+		</div>
 		<c:choose>
 			<c:when test="${! empty use_decorator}">
 				<page:applyDecorator name="${use_decorator}">

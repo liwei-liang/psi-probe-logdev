@@ -94,7 +94,7 @@ public class ListLogsController2 extends ParameterizableViewController {
 				List<File> rootsList = logByDirectoryResolver.getRootsList();
 				PathLevelBean pathLevelBean = new PathLevelBean();
 				pathLevelBean.setPathLevel(initPath);
-				pathLevelBean.setCurrentDirectory(initPath);
+				pathLevelBean.setCurrentDirectory(initPath.substring(0, initPath.length()-1));
 				pathLevelBeans.add(pathLevelBean);
 			    ModelAndView mv = new ModelAndView(getViewName());
 			    mv.addObject("logs2", logByDirectoryList);
@@ -110,7 +110,7 @@ public class ListLogsController2 extends ParameterizableViewController {
 		return new ModelAndView(errorView);
 	}
 	
-	@Value("logs2")
+	@Value("sgcio/logs2")
 	@Override
 	public void setViewName(String viewName) {
 		super.setViewName(viewName);

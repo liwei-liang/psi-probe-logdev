@@ -83,7 +83,7 @@ public class UnzipController extends ParameterizableViewController {
 		return new ModelAndView(errorView);
 	}
 
-	@Value("logs2")
+	@Value("sgcio/logs2")
 	@Override
 	public void setViewName(String viewName) {
 		super.setViewName(viewName);

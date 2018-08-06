@@ -9,32 +9,29 @@
  * PURPOSE.
  */
 var hightColorMap = new Map();
-var red = "red";
-var orange = "orange";
+var red = "Red";
+var orange = "Orange";
 hightColorMap.set(red, false);
 hightColorMap.set(orange, false);
 
-function highlight(keyword) {
+function highlight() {
 	var textbox = $('file_content');
 	var temp = textbox.innerHTML;
-	console.log(hightColorMap);
+	words = ["ERROR","WARN","DEBUG"];
 	if(!hightColorMap.get(red)){
-		if ("" == keyword) return;
-		words = decodeURIComponent(keyword.replace(/\,/g, ' ')).split(/\s+/);
+		//if ("" == keyword) return;
 		for (w = 0; w < words.length; w++) {
 			var processedKeyword = words[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&");
 			var r = new RegExp("(<div[^>]+>.?" + processedKeyword + ".*?</div>(\\s*<div[^>]+>(?!\\[).*?</div>)*)", "g");
-			temp = temp.replace(r, "<span class='hightRed'>$1</span>");
-			console.log(r);
+			//temp = temp.replace(r, "<span class='hightRed'>$1</span>");
+			temp = temp.replace(r, "<span class='hight"+processedKeyword+"'>$1</span>");
 		}
 		hightColorMap.set(red, true);
 	}
 	else{
-		words = decodeURIComponent(keyword.replace(/\,/g, ' ')).split(/\s+/);
-		for (w = 0; w < words.length; w++) {
-			var r = new RegExp("(<span.+?Red.*?>)", "g");
-			temp = temp.replace(r, "");
-		}
+		//var r = new RegExp("(<span.+?Red.*?>)", "g");
+		var r = new RegExp("(<span.+?hight.*?>)", "g");
+		temp = temp.replace(r, "");
 		hightColorMap.set(red, false);
 	}
 	textbox.innerHTML = temp;
@@ -83,10 +80,10 @@ function getAllKeywordRegExp(keyword) {
 
 function lol(match,keyword,getAllWord) {
 	if(getAllWord){
-		var replaceText = "$1<font class='hightOrange'>$2</font>$3";
+		var replaceText = "$1<font class='hightBlue'>$2</font>$3";
 		r = getAllKeywordRegExp(keyword);
 	}else{
-		var replaceText = "$1<font class='hightOrange'>$3</font>$4";
+		var replaceText = "$1<font class='hightBlue'>$3</font>$4";
 		r = getKeywordRegExp(keyword);
 	}
 	var tag = r.exec(match);

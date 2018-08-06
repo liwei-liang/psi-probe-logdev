@@ -23,4 +23,8 @@
 		<pattern>/</pattern>
 		<pattern>/*.htm</pattern>
 	</decorator>
+	<decorator name="sgcioDeco" page="sgcioDeco.jsp">
+		<pattern>/sgcio.htm</pattern>
+		<pattern>/logs2*</pattern>
+	</decorator>
 </decorators>

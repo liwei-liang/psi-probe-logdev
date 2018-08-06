@@ -24,43 +24,45 @@
 		<title>
 			<spring:message code="probe.jsp.title.logs"/>
 		</title>
+			<script type="text/javascript" src="<c:url value='/js/jquery-3.3.1.min.js'/>"></script>
 	</head>
 
 	<c:set var="navTabLogs2" value="active" scope="request"/>
 
 	<body>
 
+
 		<div class="blockContainer">
 			<div class="shadow">
 				<div class="info" style="padding-bottom: 10px;">
-					<span style = "font-size : 0px">
+				<span style="font-size: 0px">
+					<ul class="options" style="padding-bottom: 0px;">
+						<li style="padding-left: 0px; padding-right: 4px;"><a class="imglink"
+							onclick="showDisKList(this)" href="#"> <img class="lnk"
+								src="${pageContext.request.contextPath}<spring:theme code='delete.png'/>"
+								alt="<spring:message code='probe.jsp.threads.stop.alt'/>" />
+						</a></li>
+						<li style="padding-left: 0px;">
 						<c:forEach var="level" items="${pathLevels}">
-							<c:url value="/logs2/entreDirectory.htm" var="levelPath">
-								<c:param name="back" value="true"/>
-								<c:param name="path" value="${level.pathLevel}"/>
-							</c:url>
-								<a class="logfile" href="${levelPath}" style = "font-size : 13px"><probe:out value="${level.currentDirectory}\\"/></a>
-						</c:forEach>
-					</span>
-				<ul class="options">
-					<li style="padding-left: 0px;"><a class="imglink"
-						onclick="showDisKList()"
-						href="#">
-							<img class="lnk"
-							src="${pageContext.request.contextPath}<spring:theme code='delete.png'/>"
-							alt="<spring:message code='probe.jsp.threads.stop.alt'/>" />
-					</a></li>
-					<li id="chooseDisk" style="display: none;">
-						<span>Change root</span>
-						<select style="width: 90px"
-						onchange="javaScrpit:changeDisk(this.value)">
-							<option value="C:\" selected = "selected"></option>
-							<c:forEach items="${rootsList}" var="rootsList">
-								<option value="${rootsList}"><probe:out value="${rootsList}"/></option>
-							</c:forEach>
-						</select>
-					</li>
-				</ul>
+								<c:url value="/logs2/entreDirectory.htm" var="levelPath">
+									<c:param name="back" value="true" />
+									<c:param name="path" value="${level.pathLevel}" />
+								</c:url>
+								<a class="logfile" href="${levelPath}" style="font-size: 13px"><probe:out
+										value="${level.currentDirectory}\\" /></a>
+							</c:forEach></li>
+						<li id="chooseDisk" style="display: none;">
+						<span>change root</span>				
+						<select style="width: auto"
+							onchange="javaScrpit:changeDisk(this.value)">
+								<option value="C:\" selected="selected"><spring:message code='probe.jsp.logs2.select.root'/> </option>
+								<c:forEach items="${rootsList}" var="rootsList">
+									<option value="${rootsList}"><probe:out
+											value="${rootsList}" /></option>
+								</c:forEach>
+						</select></li>
+					</ul>
+				</span>
 				<ul class="options" >	
 						<li id="back">
 								<c:url value="/logs2/entreDirectory.htm" var="backUrlTest">
@@ -79,8 +81,27 @@
 	
 			<display:table name="logs2" class="genericTbl" style="border-spacing:0;border-collapse:separate;" uid="log" requestURI="">
 	
-					<display:column titleKey="probe.jsp.logs.col.type" sortable="true" property="type" class="leftmost"/>
-	
+					<display:column titleKey="probe.jsp.logs.col.type" sortable="true" class="leftmost">
+						<c:choose>
+							<c:when test="${log.type=='Directory'}">
+								<i class="imglink" ><img
+									class="lnk" src="${pageContext.request.contextPath}<spring:theme code='directory.png'/>"/>
+								</i>
+							</c:when>
+							<c:when test="${log.type=='Zip'}">
+								<i class="imglink" ><img
+									class="lnk" src="${pageContext.request.contextPath}<spring:theme code='zip.png'/>"/>
+								</i>
+							</c:when>
+							<c:otherwise>
+								<i class="imglink" ><img
+									class="lnk" src="${pageContext.request.contextPath}<spring:theme code='file.png'/>"/>
+								</i>
+							</c:otherwise>
+						</c:choose>
+					
+					
+					</display:column>
 					<display:column titleKey="probe.jsp.logs.col.file" sortable="true" sortProperty="file">
 						<c:choose>
 
@@ -107,14 +128,14 @@
 						</a>
 					</display:column>
 
-					<display:column titleKey="probe.jsp.logs.col.Download">
+					<display:column titleKey="probe.jsp.logs.col.Action">
 						<c:if test="${log.type == 'File' || log.type == 'Zip'}">
 						<c:url value="/logs2/download2" var="downloadUrl">
 							<c:param name="name" value="${log.name}"/>
 							<c:param name="path" value="${log.path}"/>
 						</c:url>
 						<a class="imglink" href="${downloadUrl}"><img
-							class="lnk" src="${pageContext.request.contextPath}<spring:theme code='download.png'/>"
+							class="lnk" title="download" src="${pageContext.request.contextPath}<spring:theme code='download.png'/>"
 							alt="<spring:message code='probe.jsp.logs.download.alt'/>"/>
 						</a>
 							<c:if test="${log.type == 'File'}">
@@ -123,15 +144,12 @@
 								alt="<spring:message code='probe.jsp.logs.download.alt'/>"/></a>
 								</c:if>
 						</c:if>
-					</display:column>
-					
-					<display:column titleKey="probe.jsp.logs.col.Unzip">
 						<c:if test="${log.type == 'Zip'}">
 						<c:url value="/logs2/Unzip" var="unZipUrl">
 							<c:param name="name" value="${log.name}"/>
 							<c:param name="path" value="${log.path}"/>
 						</c:url>
-						<a class="logfile" href="${unZipUrl}"> <spring:message
+						<a class="logfile" title="unzip" href="${unZipUrl}"> <spring:message
 								code="probe.jsp.logs2.unzip" />
 						</a>
 						</c:if>
@@ -149,9 +167,17 @@
 				</display:table>
 		</div>
 		<script type="text/javascript">
-			function showDisKList(){
+
+			function showDisKList(obj){
+		        var top = jQuery(obj).offset().top;
+		        var left = jQuery(obj).offset().left + $(obj).width() - 7;
 			    var element = document.getElementById("chooseDisk");
-			    element.style.display = "";
+			    //jQuery("#chooseDisk").css({'top':top + "px",'left':left+"px"}).show();
+				if(element.style.display == ""){
+					element.style.display = "none";
+				}else{
+				    element.style.display = "";
+				}
 			}
 			
 			function changeDisk(root){
